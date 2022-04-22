@@ -29,14 +29,13 @@ class Window:
         self.horse2img = self.horse2img.resize((int(self.width/5), int(self.height/5)))
         self.horse3img = self.horse3img.resize((int(self.width / 5), int(self.height / 5)))
         self.winscreen = PIL.Image.open("winner.png")
-
         self.width = width
         self.height = height
         self.title = title
         self.gameDisplay = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption(self.title)
         self.clock = pygame.time.Clock()
-        self.fps = 144
+        self.fps = 60
         self.list = []
         self.running = True
         self.gameExit = False
@@ -51,20 +50,18 @@ class Window:
 
 
             self.clock.tick(self.fps)
-            #create a loop that runs while horsew is igual to 0
-            #load the image of each horse using pillow
 
             horse1 = pygame.image.load('horse1.png')
             horse2 = pygame.image.load('horse2.png')
             horse3 = pygame.image.load('horse3.png')
 
 
-                # make horse 1  and horse 2 4x smaller than the original
+
             horse1 = pygame.transform.scale(horse1, (horse1.get_width() // 4, horse1.get_height() // 4))
             horse2 = pygame.transform.scale(horse2, (horse2.get_width() // 4, horse2.get_height() // 4))
             horse3 = pygame.transform.scale(horse3, (horse3.get_width() // 4, horse3.get_height() // 4))
 
-                # run image_move for horse1 and horse2 inside a separate thread
+
             thread1 = threading.Thread(target=self.image_move, args=(horse1, 0, 0,self.horse1name))
             thread2 = threading.Thread(target=self.image_move, args=(horse2, 0, 200,self.horse2name))
             thread3 = threading.Thread(target=self.image_move, args=(horse3, 0, 400,self.horse3name))
@@ -74,8 +71,6 @@ class Window:
             thread2.start()
             thread3.start()
             thread4.start()
-
-                # join the threads
 
             thread1.join()
             thread2.join()
@@ -188,7 +183,7 @@ class Window:
         pygame.quit()
         sys.exit()
 
-    # create a function called image_move that makes an image run three pixels to the right every two seconds
+
     def image_move(self,img,startx,starty,horsename):
 
         running = 0
@@ -199,19 +194,16 @@ class Window:
             self.gameDisplay.blit(img, (img_x, img_y))
             pygame.display.update()
             #1 é o ideal
-            img_x += 20
+            img_x += 1
             img_y += 0
 
             pygame.time.delay(5)
 
             self.gameDisplay.fill((0, 0, 0))
-           #print the image name
-          #  print(horsename+" está se movendo ")
 
-        #if the image collides with the edge of the screen, kill the thread
             if img_x > self.width or img_y > self.height:
                 print("-------------------------------"+horsename+ " Terminou a corrida"+"-------------------------------")
-                #create a while loop that runs while running is equal to 0
+
                 self.list.append(horsename)
 
                 while running == 0:
