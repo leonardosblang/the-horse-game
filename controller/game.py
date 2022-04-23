@@ -12,13 +12,9 @@ from PIL import ImageFont, ImageDraw
 class Window:
     def __init__(self, width, height, title):
 
-        #create three new horses from the horse class called horse1, horse2 and -
-        #read the horse1.png that is stored in the assets folder outisde the current folder
-        self.horse1 = Horse("Cavalo Roxo",  "assets/horse1.png")
-        self.horse2 = Horse("Cavalo Verde",  "assets/horse2.png")
-        self.horse3 = Horse("Cavalo Amarelo",  "assets/horse3.png")
-
-
+        self.horse1 = Horse("Cavalo Roxo", "assets/horse1.png")
+        self.horse2 = Horse("Cavalo Verde", "assets/horse2.png")
+        self.horse3 = Horse("Cavalo Amarelo", "assets/horse3.png")
 
         self.winscreen = PIL.Image.open("assets/winner.png")
         self.width = width
@@ -35,17 +31,16 @@ class Window:
         self.gameOver = False
         self.counter = 0
 
-
     def game_loop(self):
         while self.running:
-
-
             self.clock.tick(self.fps)
 
-
-            thread1 = threading.Thread(target=self.image_move, args=(self.horse1.image_game, 0, 0,self.horse1.name,self.horse1))
-            thread2 = threading.Thread(target=self.image_move, args=(self.horse2.image_game, 0, 200,self.horse2.name,self.horse2))
-            thread3 = threading.Thread(target=self.image_move, args=(self.horse3.image_game, 0, 400,self.horse3.name,self.horse3))
+            thread1 = threading.Thread(target=self.image_move,
+                                       args=(self.horse1.image_game, 0, 0, self.horse1.name, self.horse1))
+            thread2 = threading.Thread(target=self.image_move,
+                                       args=(self.horse2.image_game, 0, 200, self.horse2.name, self.horse2))
+            thread3 = threading.Thread(target=self.image_move,
+                                       args=(self.horse3.image_game, 0, 400, self.horse3.name, self.horse3))
             thread4 = threading.Thread(target=self.show_winners)
 
             thread1.start()
@@ -57,7 +52,6 @@ class Window:
             thread2.join()
             thread3.join()
             thread4.join()
-
 
     def event_loop(self):
         for event in pygame.event.get():
@@ -79,21 +73,19 @@ class Window:
                 print(self.list)
                 print("O vencedor é: " + self.list[0])
 
-                #set the image in the background as the horse in position 0
+                # set the image in the background as the horse in position 0
                 self.placements()
                 for i in range(0, len(self.list)):
-                    print("Colocações: " + self.list[i]+ " - " + str(i+1))
+                    print("Colocações: " + self.list[i] + " - " + str(i + 1))
 
                 running = 0
             pass
-
 
     def placements(self):
 
         winner_horse = self.list_obj[0]
         second_place = self.list_obj[1]
         third_place = self.list_obj[2]
-
 
         self.winscreen.paste(winner_horse.image_winscreen, (290, 220), winner_horse.image_winscreen)
         self.winscreen.paste(second_place.image_winscreen, (510, 250), second_place.image_winscreen)
@@ -111,27 +103,25 @@ class Window:
         rand_letter2 = random.choice(string.ascii_letters).upper()
 
         font = ImageFont.truetype("arial.ttf", 32)
-        text = rand_letter+rand_letter2+str(rand_number)
+        text = rand_letter + rand_letter2 + str(rand_number)
         text_img = PIL.Image.new('RGBA', (370, 200), (255, 255, 255, 0))
         draw = ImageDraw.Draw(text_img)
         draw.text((0, 0), text, (0, 0, 0), font=font)
         self.winscreen.paste(text_img, (0, 0), text_img)
         self.winscreen.save("winscreen.png")
 
-
-
     def game_exit(self):
         pygame.quit()
         sys.exit()
 
-    def image_move(self,img,startx,starty,horsename,horse):
+    def image_move(self, img, startx, starty, horsename, horse):
         running = 0
         img_x = startx
         img_y = starty
         while self.running:
             self.gameDisplay.blit(img, (img_x, img_y))
             pygame.display.update()
-            #1 é o ideal
+            # 1 é o ideal
             img_x += 1
             img_y += 0
 
@@ -140,11 +130,12 @@ class Window:
             self.gameDisplay.fill((0, 0, 0))
 
             if img_x > self.width or img_y > self.height:
-                print("-------------------------------"+horsename+ " Terminou a corrida"+"-------------------------------")
+                print(
+                    "-------------------------------" + horsename + " Terminou a corrida" + "-------------------------------")
 
                 self.list.append(horsename)
                 self.list_obj.append(horse)
 
                 while running == 0:
-                   pass
+                    pass
         pass
