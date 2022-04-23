@@ -4,9 +4,8 @@ import pygame
 
 
 class Horse:
-    def __init__(self, name, color, image):
+    def __init__(self, name, image):
         self.name = name
-        self.color = color
         self.image = PIL.Image.open(image)
         self.width, self.height = self.image.size
         self.image_winscreen =  self.image.resize((int(self.width/5), int(self.height/5)))

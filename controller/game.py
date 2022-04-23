@@ -14,9 +14,9 @@ class Window:
 
         #create three new horses from the horse class called horse1, horse2 and -
         #read the horse1.png that is stored in the assets folder outisde the current folder
-        self.horse1 = Horse("Cavalo Roxo", 0, "assets/horse1.png")
-        self.horse2 = Horse("Cavalo Verde", 0, "assets/horse2.png")
-        self.horse3 = Horse("Cavalo Amarelo", 0, "assets/horse3.png")
+        self.horse1 = Horse("Cavalo Roxo",  "assets/horse1.png")
+        self.horse2 = Horse("Cavalo Verde",  "assets/horse2.png")
+        self.horse3 = Horse("Cavalo Amarelo",  "assets/horse3.png")
 
 
 
