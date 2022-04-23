@@ -1,2 +1,4 @@
-# the-horse-game - WIP
-Jogo feito para o Trabalho de Threads da Disciplina SO
+# The Horse Game
+## Simulador de corrida equina utilizando threads feito para a disciplina de Sistemas Operacionais.
+
+<img src="winscreen.png" />
