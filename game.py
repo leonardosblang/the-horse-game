@@ -4,7 +4,7 @@ import pygame
 import sys
 import threading
 import string
-
+from horse import Horse
 
 from PIL import ImageFont, ImageDraw
 
@@ -12,14 +12,13 @@ from PIL import ImageFont, ImageDraw
 class Window:
     def __init__(self, width, height, title):
 
+        #create three new horses from the horse class called horse1, horse2 and horse3
+        self.horse1 = Horse("Cavalo Roxo", 0, "horse1.png")
+        self.horse2 = Horse("Cavalo Verde", 0, "horse2.png")
+        self.horse3 = Horse("Cavalo Amarelo", 0, "horse3.png")
 
-        self.horse1img = PIL.Image.open("horse1.png")
-        self.horse2img = PIL.Image.open("horse2.png")
-        self.horse3img = PIL.Image.open("horse3.png")
-        self.width, self.height = self.horse1img.size
-        self.horse1img = self.horse1img.resize((int(self.width/5), int(self.height/5)))
-        self.horse2img = self.horse2img.resize((int(self.width/5), int(self.height/5)))
-        self.horse3img = self.horse3img.resize((int(self.width / 5), int(self.height / 5)))
+
+
         self.winscreen = PIL.Image.open("winner.png")
         self.width = width
         self.height = height
@@ -33,27 +32,18 @@ class Window:
         self.gameExit = False
         self.gameOver = False
         self.counter = 0
-        self.horse1name = "Cavalo Roxo"
-        self.horse2name = "Cavalo Verde"
-        self.horse3name = "Cavalo Amarelo"
+
 
     def game_loop(self):
         while self.running:
 
 
             self.clock.tick(self.fps)
-            horse1 = pygame.image.load('horse1.png')
-            horse2 = pygame.image.load('horse2.png')
-            horse3 = pygame.image.load('horse3.png')
-
-            horse1 = pygame.transform.scale(horse1, (horse1.get_width() // 4, horse1.get_height() // 4))
-            horse2 = pygame.transform.scale(horse2, (horse2.get_width() // 4, horse2.get_height() // 4))
-            horse3 = pygame.transform.scale(horse3, (horse3.get_width() // 4, horse3.get_height() // 4))
 
 
-            thread1 = threading.Thread(target=self.image_move, args=(horse1, 0, 0,self.horse1name))
-            thread2 = threading.Thread(target=self.image_move, args=(horse2, 0, 200,self.horse2name))
-            thread3 = threading.Thread(target=self.image_move, args=(horse3, 0, 400,self.horse3name))
+            thread1 = threading.Thread(target=self.image_move, args=(self.horse1.image_game, 0, 0,self.horse1.name))
+            thread2 = threading.Thread(target=self.image_move, args=(self.horse2.image_game, 0, 200,self.horse2.name))
+            thread3 = threading.Thread(target=self.image_move, args=(self.horse3.image_game, 0, 400,self.horse3.name))
             thread4 = threading.Thread(target=self.show_winners)
 
             thread1.start()
@@ -101,24 +91,24 @@ class Window:
         second_place = self.list[1]
         third_place = self.list[2]
         print(winner_horse + " " + second_place + " " + third_place)
-        if winner_horse == self.horse1name:
-            winner_horse = self.horse1img
-        elif winner_horse == self.horse2name:
-            winner_horse = self.horse2img
-        elif winner_horse == self.horse3name:
-            winner_horse = self.horse3img
-        if second_place == self.horse1name:
-            second_place = self.horse1img
-        elif second_place == self.horse2name:
-            second_place = self.horse2img
-        elif second_place == self.horse3name:
-            second_place = self.horse3img
-        if third_place == self.horse1name:
-            third_place = self.horse1img
-        elif third_place == self.horse2name:
-            third_place = self.horse2img
-        elif third_place == self.horse3name:
-            third_place = self.horse3img
+        if winner_horse == self.horse1.name:
+            winner_horse = self.horse1.image_winscreen
+        elif winner_horse == self.horse2.name:
+            winner_horse = self.horse2.image_winscreen
+        elif winner_horse == self.horse3.name:
+            winner_horse = self.horse3.image_winscreen
+        if second_place == self.horse1.name:
+            second_place = self.horse1.image_winscreen
+        elif second_place == self.horse2.name:
+            second_place = self.horse2.image_winscreen
+        elif second_place == self.horse3.name:
+            second_place = self.horse3.image_winscreen
+        if third_place == self.horse1.name:
+            third_place = self.horse1.image_winscreen
+        elif third_place == self.horse2.name:
+            third_place = self.horse2.image_winscreen
+        elif third_place == self.horse3.name:
+            third_place = self.horse3.image_winscreen
 
         self.winscreen.paste(winner_horse, (290, 220), winner_horse)
         self.winscreen.paste(second_place, (510, 250), second_place)
