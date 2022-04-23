@@ -73,7 +73,6 @@ class Window:
                 print(self.list)
                 print("O vencedor é: " + self.list[0])
 
-                # set the image in the background as the horse in position 0
                 self.placements()
                 for i in range(0, len(self.list)):
                     print("Colocações: " + self.list[i] + " - " + str(i + 1))
