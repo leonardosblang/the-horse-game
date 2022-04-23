@@ -1,4 +1,2 @@
-from game import Window
-window = Window(800, 600, "The Horse Game" )
-window.game_loop()
-window.game_exit()
+from view.view import View
+start = View()

@@ -4,7 +4,7 @@ import pygame
 import sys
 import threading
 import string
-from horse import Horse
+from model.horse import Horse
 
 from PIL import ImageFont, ImageDraw
 
@@ -12,14 +12,15 @@ from PIL import ImageFont, ImageDraw
 class Window:
     def __init__(self, width, height, title):
 
-        #create three new horses from the horse class called horse1, horse2 and horse3
-        self.horse1 = Horse("Cavalo Roxo", 0, "horse1.png")
-        self.horse2 = Horse("Cavalo Verde", 0, "horse2.png")
-        self.horse3 = Horse("Cavalo Amarelo", 0, "horse3.png")
+        #create three new horses from the horse class called horse1, horse2 and -
+        #read the horse1.png that is stored in the assets folder outisde the current folder
+        self.horse1 = Horse("Cavalo Roxo", 0, "assets/horse1.png")
+        self.horse2 = Horse("Cavalo Verde", 0, "assets/horse2.png")
+        self.horse3 = Horse("Cavalo Amarelo", 0, "assets/horse3.png")
 
 
 
-        self.winscreen = PIL.Image.open("winner.png")
+        self.winscreen = PIL.Image.open("assets/winner.png")
         self.width = width
         self.height = height
         self.title = title
@@ -28,6 +29,7 @@ class Window:
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.list = []
+        self.list_obj = []
         self.running = True
         self.gameExit = False
         self.gameOver = False
@@ -41,9 +43,9 @@ class Window:
             self.clock.tick(self.fps)
 
 
-            thread1 = threading.Thread(target=self.image_move, args=(self.horse1.image_game, 0, 0,self.horse1.name))
-            thread2 = threading.Thread(target=self.image_move, args=(self.horse2.image_game, 0, 200,self.horse2.name))
-            thread3 = threading.Thread(target=self.image_move, args=(self.horse3.image_game, 0, 400,self.horse3.name))
+            thread1 = threading.Thread(target=self.image_move, args=(self.horse1.image_game, 0, 0,self.horse1.name,self.horse1))
+            thread2 = threading.Thread(target=self.image_move, args=(self.horse2.image_game, 0, 200,self.horse2.name,self.horse2))
+            thread3 = threading.Thread(target=self.image_move, args=(self.horse3.image_game, 0, 400,self.horse3.name,self.horse3))
             thread4 = threading.Thread(target=self.show_winners)
 
             thread1.start()
@@ -87,32 +89,15 @@ class Window:
 
 
     def placements(self):
-        winner_horse = self.list[0]
-        second_place = self.list[1]
-        third_place = self.list[2]
-        print(winner_horse + " " + second_place + " " + third_place)
-        if winner_horse == self.horse1.name:
-            winner_horse = self.horse1.image_winscreen
-        elif winner_horse == self.horse2.name:
-            winner_horse = self.horse2.image_winscreen
-        elif winner_horse == self.horse3.name:
-            winner_horse = self.horse3.image_winscreen
-        if second_place == self.horse1.name:
-            second_place = self.horse1.image_winscreen
-        elif second_place == self.horse2.name:
-            second_place = self.horse2.image_winscreen
-        elif second_place == self.horse3.name:
-            second_place = self.horse3.image_winscreen
-        if third_place == self.horse1.name:
-            third_place = self.horse1.image_winscreen
-        elif third_place == self.horse2.name:
-            third_place = self.horse2.image_winscreen
-        elif third_place == self.horse3.name:
-            third_place = self.horse3.image_winscreen
 
-        self.winscreen.paste(winner_horse, (290, 220), winner_horse)
-        self.winscreen.paste(second_place, (510, 250), second_place)
-        self.winscreen.paste(third_place, (50, 270), third_place)
+        winner_horse = self.list_obj[0]
+        second_place = self.list_obj[1]
+        third_place = self.list_obj[2]
+
+
+        self.winscreen.paste(winner_horse.image_winscreen, (290, 220), winner_horse.image_winscreen)
+        self.winscreen.paste(second_place.image_winscreen, (510, 250), second_place.image_winscreen)
+        self.winscreen.paste(third_place.image_winscreen, (50, 270), third_place.image_winscreen)
 
         font = ImageFont.truetype("arial.ttf", 48)
         text = self.list[0]
@@ -139,7 +124,7 @@ class Window:
         pygame.quit()
         sys.exit()
 
-    def image_move(self,img,startx,starty,horsename):
+    def image_move(self,img,startx,starty,horsename,horse):
         running = 0
         img_x = startx
         img_y = starty
@@ -158,6 +143,7 @@ class Window:
                 print("-------------------------------"+horsename+ " Terminou a corrida"+"-------------------------------")
 
                 self.list.append(horsename)
+                self.list_obj.append(horse)
 
                 while running == 0:
                    pass
